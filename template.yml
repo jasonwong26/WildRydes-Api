@@ -29,6 +29,9 @@ Resources:
       KeySchema:
         - AttributeName: "RideId"
           KeyType: "S"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
 
   HelloWorld:
     Type: AWS::Serverless::Function
