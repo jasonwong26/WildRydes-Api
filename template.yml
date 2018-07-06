@@ -19,6 +19,17 @@ Parameters:
 #       Type: Canary10Percent5Minutes
 
 Resources:
+  RideTable:
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      TableName: !Join ['-', [!Ref 'ProjectId', 'Rides']]
+      AttributeDefinitions:
+        - AttributeName: "RideId"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "RideId"
+          KeyType: "S"
+
   HelloWorld:
     Type: AWS::Serverless::Function
     Properties:
