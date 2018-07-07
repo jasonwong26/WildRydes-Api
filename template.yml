@@ -82,6 +82,16 @@ Resources:
             Effect: Allow
             Action: dynamodb:ListTables
 
+  RequestRide:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs6.1
+      Role: LambdaExecRole
+      Handler: requestUnicorn.handler
+      Environment:
+        Variables:
+          NODE_ENV: production
+
   HelloWorld:
     Type: AWS::Serverless::Function
     Properties:
