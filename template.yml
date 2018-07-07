@@ -33,60 +33,12 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
 
-  LambdaExecRole:
-    Type: "AWS::IAM::Role"
-    Properties:
-      RoleName: !Join ['-', [!Ref 'ProjectId', 'LambdaRole']]
-      AssumeRolePolicyDocument:
-        Statement:
-        - Action: sts:AssumeRole
-          Effect: Allow
-          Principal:
-            Service:
-            - lambda.amazonaws.com
-      ManagedPolicyArns:
-      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-      Path: /
-      Policies:
-      - PolicyName: CodeStarLambdaWorkerPolicy
-        PolicyDocument:
-          Version: 2012-10-17
-          Statement:
-          - Resource: '*'
-            Effect: Allow
-            Action:
-            - logs:CreateLogGroup
-            - logs:CreateLogStream
-            - logs:PutLogEvents
-      - PolicyName: DynamoDbReadWritePolicy
-        PolicyDocument:
-          Version: 2012-10-17
-          Statement:
-          - Resource: arn:aws:dynamodb:*:*:table/*/index/*
-            Effect: Allow
-            Action:
-            - dynamodb:Scan
-            - dynamodb:Query
-          - Resource: arn:aws:dynamodb:*:*:table/*
-            Effect: Allow
-            Action:
-            - dynamodb:BatchGetItem
-            - dynamodb:PutItem
-            - dynamodb:DescribeTable
-            - dynamodb:DeleteItem
-            - dynamodb:GetItem
-            - dynamodb:Scan
-            - dynamodb:Query
-            - dynamodb:UpdateItem
-          - Resource: "*"
-            Effect: Allow
-            Action: dynamodb:ListTables
-
   RequestRide:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: nodejs6.1
-      Role: LambdaExecRole
+      Role:
+        Fn::ImportValue: !Join ['-', [!Ref 'ProjectId', 'LambdaRole']]
       Handler: requestUnicorn.handler
       Environment:
         Variables:
