@@ -34,9 +34,9 @@ Resources:
         WriteCapacityUnits: 5
 
   LambdaExecRole:
-    RoleName: !Join ['-', [!Ref 'ProjectId', 'LambdaRole']]
     Type: "AWS::IAM::Role"
     Properties:
+      RoleName: !Join ['-', [!Ref 'ProjectId', 'LambdaRole']]
       AssumeRolePolicyDocument:
         Statement:
         - Action: sts:AssumeRole
